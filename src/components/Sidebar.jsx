@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import axios from "axios"
+
 
 // Queremos llamar a la api para que nos de los primeros 20 pokemon y pintamos esa info haciendo un Link por cada pokemon de la lista
 
@@ -16,13 +18,21 @@ function Sidebar() {
 
   useEffect(() => {
 
-    fetch("https://pokeapi.co/api/v2/pokemon")
+    // fetch("https://pokeapi.co/api/v2/pokemon")
+    // .then((response) => {
+    //   return response.json()
+    // })
+    // .then((data) => {
+    //   console.log(data)
+    //   setAllPokemon(data.results)
+    // })
+    axios.get("https://pokeapi.co/api/v2/pokemon?limit=151")
     .then((response) => {
-      return response.json()
+      // console.log(response)
+      setAllPokemon(response.data.results)
     })
-    .then((data) => {
-      console.log(data)
-      setAllPokemon(data.results)
+    .catch((error) => {
+      console.log(error)
     })
 
   }, [])
@@ -41,7 +51,7 @@ function Sidebar() {
       <Link to={"/"}>squirtle</Link> */}
 
       { allPokemon.map((eachPokemon) => {
-        return <Link key={eachPokemon.name} to={"/"}>{eachPokemon.name}</Link>
+        return <Link key={eachPokemon.name} to={`/poke/${eachPokemon.name}`}>{eachPokemon.name}</Link>
       }) }
 
     </nav>
